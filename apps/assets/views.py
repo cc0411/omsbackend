@@ -28,23 +28,26 @@ class AssetViewSet(viewsets.ModelViewSet):
     search_fields = ('wip','nip','status','hostname','desc','server_type')
     ordering_fields = ('ctime','hostname','wip','nip')
     permission_classes = (IsAuthenticated,)
-    authentication_classes = (JSONWebTokenAuthentication,SessionAuthentication)
+
 
 
 class IdcViewSet(viewsets.ModelViewSet):
     queryset = IDC.objects.all()
     serializer_class = IdcSerializer
     permission_classes = [IsAuthenticated, ]
-    authentication_classes = (JSONWebTokenAuthentication,)
+
 
 class RoleViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     permission_classes = [IsAuthenticated, ]
-    authentication_classes = (JSONWebTokenAuthentication,)
+
 
 class  BusinessUnitViewSet(viewsets.ModelViewSet):
     queryset = BusinessUnit.objects.all()
     serializer_class = BusinessUnitSerializer
     permission_classes = [IsAuthenticated, ]
-    authentication_classes = (JSONWebTokenAuthentication,)
+
+
+
+

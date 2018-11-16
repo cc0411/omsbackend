@@ -13,14 +13,14 @@ class IdcSerializer(serializers.ModelSerializer):
         model = IDC
         fields = ["id","name","desc",'ctime']
 class BusinessUnitSerializer(serializers.ModelSerializer):
-    parent_unit = serializers.SlugRelatedField(queryset=BusinessUnit.objects.all(), slug_field='name')
+    parent_unit = serializers.SlugRelatedField(queryset=BusinessUnit.objects.all(), slug_field='name',allow_empty=True,allow_null=True)
     class Meta:
         model = BusinessUnit
         fields = "__all__"
 class AssetSerializer(serializers.ModelSerializer):
-    idc = serializers.SlugRelatedField(queryset=IDC.objects.all(),slug_field='name')
-    role = serializers.SlugRelatedField(many=True, queryset=Tag.objects.all(), slug_field='name')
-    business_unit = serializers.SlugRelatedField(queryset=BusinessUnit.objects.all(),slug_field='name')
+    idc = serializers.SlugRelatedField(queryset=IDC.objects.all(),slug_field='name',allow_empty=True,allow_null=True)
+    role = serializers.SlugRelatedField(many=True, queryset=Tag.objects.all(), slug_field='name',allow_empty=True,allow_null=True)
+    business_unit = serializers.SlugRelatedField(queryset=BusinessUnit.objects.all(),slug_field='name',allow_empty=True,allow_null=True)
     #status = serializers.CharField(source='get_status_display')
     #server_type = serializers.CharField(source='get_server_type_display')
     #自定义字段

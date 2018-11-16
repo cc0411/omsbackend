@@ -22,7 +22,6 @@ class CustomBackend(ModelBackend):
 class  UserInfoViewSet(mixins.ListModelMixin,mixins.RetrieveModelMixin,mixins.UpdateModelMixin,viewsets.GenericViewSet):
     serializer_class = UserInfoSerializers
     queryset = User.objects.all()
-    authentication_classes = (JSONWebTokenAuthentication, )
     permission_classes = [IsAuthenticated,]
     #lookup_field = "username"
     def get_object(self):
