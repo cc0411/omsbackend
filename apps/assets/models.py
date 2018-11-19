@@ -37,7 +37,12 @@ class Assets(models.Model):
 
 class BusinessUnit(models.Model):
     """业务线"""
-
+    BusinessUnit_TYPE =(
+        (1,'一级业务线'),
+        (2,'二级业务线'),
+        (3,'三级业务线')
+    )
+    businessunit_type =models.IntegerField(choices=BusinessUnit_TYPE,verbose_name=u'业务线级别',default=1)
     parent_unit = models.ForeignKey('self', blank=True, null=True, related_name='parent_level')
     name = models.CharField(u'业务线', max_length=64, unique=True,error_messages={'unique':'该业务线已存在，请不要重复添加'})
     desc = models.CharField(u'备注', max_length=64, blank=True, null=True)
@@ -83,5 +88,5 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = u'类型'
+        verbose_name = u'角色'
         verbose_name_plural = verbose_name

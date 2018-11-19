@@ -12,15 +12,28 @@ class IdcSerializer(serializers.ModelSerializer):
     class Meta:
         model = IDC
         fields = ["id","name","desc",'ctime']
+
+class BusinessUnitSerializer3(serializers.ModelSerializer):
+    class Meta:
+        model = BusinessUnit
+        fields = "__all__"
+class BusinessUnitSerializer2(serializers.ModelSerializer):
+    parent_level = BusinessUnitSerializer3(many =True)
+    #parent_unit = serializers.SlugRelatedField(queryset=BusinessUnit.objects.all(), slug_field='name',allow_empty=True,allow_null=True)
+    class Meta:
+        model = BusinessUnit
+        fields = "__all__"
 class BusinessUnitSerializer(serializers.ModelSerializer):
-    parent_unit = serializers.SlugRelatedField(queryset=BusinessUnit.objects.all(), slug_field='name',allow_empty=True,allow_null=True)
+    parent_level = BusinessUnitSerializer2(many =True)
+    #parent_unit = serializers.SlugRelatedField(queryset=BusinessUnit.objects.all(), slug_field='name',allow_empty=True,allow_null=True)
     class Meta:
         model = BusinessUnit
         fields = "__all__"
 class AssetSerializer(serializers.ModelSerializer):
     idc = serializers.SlugRelatedField(queryset=IDC.objects.all(),slug_field='name',allow_empty=True,allow_null=True)
     role = serializers.SlugRelatedField(many=True, queryset=Tag.objects.all(), slug_field='name',allow_empty=True,allow_null=True)
-    business_unit = serializers.SlugRelatedField(queryset=BusinessUnit.objects.all(),slug_field='name',allow_empty=True,allow_null=True)
+    #business_unit = serializers.SlugRelatedField(queryset=BusinessUnit.objects.all(),slug_field='name',allow_empty=True,allow_null=True)
+    business_unit = BusinessUnitSerializer()
     #status = serializers.CharField(source='get_status_display')
     #server_type = serializers.CharField(source='get_server_type_display')
     #自定义字段
@@ -37,6 +50,15 @@ class AssetSerializer(serializers.ModelSerializer):
         fields = "__all__"
         #depth =2
 
-
-
+from django.db.models import Q
+class TreeBusinessUnitSerializer(serializers.ModelSerializer):
+    assets = serializers.SerializerMethodField()
+    parent_level = BusinessUnitSerializer2(many=True)
+    def get_assets(self,obj):
+        all_assets = Assets.objects.filter(Q(business_unit_id=obj.id)|Q(business_unit__parent_unit_id=obj.id)|Q(business_unit__parent_unit__parent_unit_id=obj.id))
+        assets_serializer = AssetSerializer(all_assets,many=True,context={'request':self.context['request']})
+        return assets_serializer.data
+    class Meta:
+        model = BusinessUnit
+        fields = '__all__'
 

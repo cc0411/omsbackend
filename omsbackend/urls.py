@@ -21,7 +21,7 @@ from rest_framework.documentation import  include_docs_urls
 from rest_framework.routers import DefaultRouter
 #jwt使用
 from rest_framework_jwt.views import obtain_jwt_token
-from assets.views import AssetViewSet,IdcViewSet,BusinessUnitViewSet,RoleViewSet,BusinessUnitTree
+from assets.views import AssetViewSet,IdcViewSet,BusinessUnitViewSet,RoleViewSet,TreeBusinessunitViewset
 from salt.views import MinionListViewSet,SaltCmdInfoViewSet,SaltKeyViewSet
 from users.views import UserInfoViewSet
 from django.views.generic import TemplateView
@@ -32,6 +32,7 @@ router.register(r'assets',AssetViewSet,base_name='assets'),
 router.register(r'idc',IdcViewSet,base_name='idc'),
 router.register(r'role',RoleViewSet,base_name='role'),
 router.register(r'businessunit',BusinessUnitViewSet,base_name='businessunit'),
+router.register(r'treeassets',TreeBusinessunitViewset,base_name='treeassets'),
 #salt路由
 router.register(r'minionlist',MinionListViewSet,base_name="minionlist")
 router.register(r'saltkey',SaltKeyViewSet,base_name="saltkey")
@@ -52,8 +53,6 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls')),
     #rest文档页
     url(r'docs/',include_docs_urls(title="OMS")),
-
-    url(r'^tree/$',BusinessUnitTree.as_view(),name='tree'),
     #路由
     url(r'^api/', include(router.urls)),
     #jwt的认证接口,用于获取token   header加入Authorization: JWT <your_token>
