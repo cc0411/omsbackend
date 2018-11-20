@@ -30,6 +30,10 @@ class AssetViewSet(viewsets.ModelViewSet):
     ordering_fields = ('ctime','hostname','wip','nip')
     permission_classes = (IsAuthenticated,)
 
+
+
+
+
 class IdcViewSet(viewsets.ModelViewSet):
     queryset = IDC.objects.all()
     serializer_class = IdcSerializer
@@ -41,7 +45,7 @@ class RoleViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, ]
 
 class  BusinessUnitViewSet(viewsets.ModelViewSet):
-    queryset = BusinessUnit.objects.filter(businessunit_type=1)
+    queryset = BusinessUnit.objects.filter()
     serializer_class = BusinessUnitSerializer
     permission_classes = [IsAuthenticated, ]
 
