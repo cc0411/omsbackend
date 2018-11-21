@@ -45,7 +45,7 @@ class RoleViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, ]
 
 class  BusinessUnitViewSet(viewsets.ModelViewSet):
-    queryset = BusinessUnit.objects.filter()
+    queryset = BusinessUnit.objects.filter(businessunit_type=1)
     serializer_class = BusinessUnitSerializer
     permission_classes = [IsAuthenticated, ]
 
