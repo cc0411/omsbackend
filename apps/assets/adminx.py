@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from .models import  Assets,RemoteUser,BusinessUnit,IDC,Tag
+from .models import  Assets,RemoteUser,BusinessUnit,IDC,HostGroup
 
 import xadmin
 
@@ -14,7 +14,7 @@ class RemoteUserAdmin(object):
     search_fields =['name',]
     list_filter =['name',]
 class BusinessUnitAdmin(object):
-    list_display =['parent_unit','name']
+    list_display =['name']
     search_fields =['name']
     list_filter =['name']
 class IdcAdmin(object):
@@ -22,7 +22,7 @@ class IdcAdmin(object):
     search_fields = ['name','ctime']
     list_filter = ['name','ctime']
 
-class TagAdmin(object):
+class HostGroupAdmin(object):
     list_display = ['name','ctime']
     search_fields = ['name','ctime']
     list_filter = ['name','ctime']
@@ -30,5 +30,5 @@ class TagAdmin(object):
 xadmin.site.register(Assets,AssetAdmin)
 xadmin.site.register(BusinessUnit,BusinessUnitAdmin)
 xadmin.site.register(RemoteUser,RemoteUserAdmin)
-xadmin.site.register(Tag,TagAdmin)
+xadmin.site.register(HostGroup,HostGroupAdmin)
 xadmin.site.register(IDC,IdcAdmin)

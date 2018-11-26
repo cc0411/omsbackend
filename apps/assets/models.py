@@ -26,7 +26,7 @@ class Assets(models.Model):
     ctime = models.DateTimeField(default=datetime.now, verbose_name=u'创建时间')
     utime = models.DateTimeField(auto_now=True, verbose_name=u'更新时间')
     idc = models.ForeignKey('IDC', verbose_name=u'机房',blank=True,null=True,related_name='idc')
-    role = models.ManyToManyField('Tag',verbose_name=u'标签',blank=True,null=True,related_name='tag')
+    group = models.ManyToManyField('HostGroup',verbose_name=u'主机组',blank=True,null=True,related_name='tag')
     business_unit = models.ForeignKey('BusinessUnit',verbose_name=u'业务线',blank=True,null=True,related_name='businessunit')
     desc = models.CharField(max_length=200, verbose_name=u'描述',blank=True,null=True)
     class Meta:
@@ -37,14 +37,8 @@ class Assets(models.Model):
 
 class BusinessUnit(models.Model):
     """业务线"""
-    BusinessUnit_TYPE =(
-        (1,'一级业务线'),
-        (2,'二级业务线'),
-        (3,'三级业务线')
-    )
-    businessunit_type =models.IntegerField(choices=BusinessUnit_TYPE,verbose_name=u'业务线级别',default=1)
-    parent_unit = models.ForeignKey('self', blank=True, null=True, related_name='parent_level')
     name = models.CharField(u'业务线', max_length=64, unique=True,error_messages={'unique':'该业务线已存在，请不要重复添加'})
+    group = models.ManyToManyField('HostGroup',verbose_name='主机组',blank=True,null=True)
     desc = models.CharField(u'备注', max_length=64, blank=True, null=True)
     ctime = models.DateTimeField(default=datetime.now, verbose_name=u'创建时间')
     def __str__(self):
@@ -81,12 +75,12 @@ class IDC(models.Model):
     def __str__(self):
         return self.name
 
-class Tag(models.Model):
-    name = models.CharField(max_length=32,verbose_name=u'角色',unique=True,error_messages={'unique':'该角色已存在，请不要重复添加'})
+class HostGroup(models.Model):
+    name = models.CharField(max_length=32,verbose_name=u'主机组名',unique=True,error_messages={'unique':'该角色已存在，请不要重复添加'})
     ctime = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
     desc = models.CharField(max_length=128,default='',verbose_name=u'描述', blank=True, null=True)
     def __str__(self):
         return self.name
     class Meta:
-        verbose_name = u'角色'
+        verbose_name = u'主机组'
         verbose_name_plural = verbose_name

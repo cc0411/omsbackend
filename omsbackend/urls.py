@@ -21,7 +21,7 @@ from rest_framework.documentation import  include_docs_urls
 from rest_framework.routers import DefaultRouter
 #jwt使用
 from rest_framework_jwt.views import obtain_jwt_token
-from assets.views import AssetViewSet,IdcViewSet,BusinessUnitViewSet,RoleViewSet,TreeBusinessunitViewset
+from assets.views import AssetViewSet,IdcViewSet,BusinessUnitViewSet,HostGroupViewSet
 from salt.views import MinionListViewSet,SaltCmdInfoViewSet,SaltKeyViewSet
 from users.views import UserInfoViewSet
 from django.views.generic import TemplateView
@@ -30,9 +30,8 @@ router = DefaultRouter()
 #主机管理路由
 router.register(r'assets',AssetViewSet,base_name='assets'),
 router.register(r'idc',IdcViewSet,base_name='idc'),
-router.register(r'role',RoleViewSet,base_name='role'),
+router.register(r'group',HostGroupViewSet,base_name='role'),
 router.register(r'businessunit',BusinessUnitViewSet,base_name='businessunit'),
-router.register(r'treeassets',TreeBusinessunitViewset,base_name='treeassets'),
 #salt路由
 router.register(r'minionlist',MinionListViewSet,base_name="minionlist")
 router.register(r'saltkey',SaltKeyViewSet,base_name="saltkey")
