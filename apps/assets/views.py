@@ -1,5 +1,5 @@
 from rest_framework import viewsets,mixins,generics
-from .serializer import AssetSerializer,IdcSerializer,TagSerializer,BusinessUnitSerializer
+from .serializer import AssetSerializer,IdcSerializer,TagSerializer,BusinessUnitSerializer,UnitTreeSerializer
 from rest_framework.pagination import  PageNumberPagination
 from .models import Assets,IDC,HostGroup,BusinessUnit
 from rest_framework.permissions import  IsAuthenticated
@@ -42,5 +42,9 @@ class  BusinessUnitViewSet(viewsets.ModelViewSet):
     serializer_class = BusinessUnitSerializer
     permission_classes = [IsAuthenticated, ]
 
+class  UnitTreeViewSet(viewsets.ModelViewSet):
+    queryset = BusinessUnit.objects.all()
+    serializer_class = UnitTreeSerializer
+    permission_classes = [IsAuthenticated, ]
 
 
