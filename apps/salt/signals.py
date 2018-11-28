@@ -5,7 +5,7 @@ from .models import SaltKeyList,MinionList
 import time
 import logging
 
-logger = logging.getLogger('oms.views')
+logger = logging.getLogger('omsbackend.views')
 
 # 在操作saltkey表的保存时候同时对minion管理表做创建或更新操作
 @receiver(post_save,sender = SaltKeyList,dispatch_uid ="saltkey_list_post_save")

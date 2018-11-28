@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from django.conf import settings
-import time
 import copy
 import requests
 import logging
 
 # Create your views here.
-logger = logging.getLogger('devoms.views')
+logger = logging.getLogger('omsbackend.views')
 
 
 # 封装salt-api的调用

@@ -176,3 +176,92 @@ JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
     'JWT_AUTH_HEADER_PREFIX': 'JWT',
 }
+
+
+# salt-api地址
+SALT_API_URL = 'https://192.168.56.101:8000'
+# salt-api用户
+SALT_API_NAME = 'saltapi'
+# salt-api密码
+SALT_API_PWD = '123456'
+# salt服务端安装的minion的id，服务端也要安装一下minion，有很多用到的时候
+SALT_MASTER = '192.168.56.101'
+# salt服务端IP，salt-ssh等调用
+SALT_MASTER_IP = '192.168.56.101'
+#LOGGING
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'standard': {
+            'format': '%(asctime)s [%(threadName)s:%(thread)d] [%(name)s:%(lineno)d] [%(module)s:%(funcName)s] [%(levelname)s]- %(message)s'}  # 日志格式
+    },
+    'filters': {
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html': True,
+            },
+        # 下面是django自带的最详细的输出
+        'default': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/all.log'),     # 日志输出文件，根目录下需要手动新建
+            'maxBytes': 1024*1024*5,                  # 文件大小5M
+            'backupCount': 5,                         # 备份份数
+            'formatter': 'standard',                   # 使用哪种formatters日志格式上面定义了standard
+        },
+        # 下面是django自带的控制台输出
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'standard'
+        },
+        # 下面是django自带的5xx或者4xx错误记录在script.log里
+        'request_handler': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/script.log'),
+            'maxBytes': 1024*1024*5,
+            'backupCount': 5,
+            'formatter': 'standard',
+            },
+        # 下面是django自带的脚本错误记录
+        'scprits_handler': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR,'logs/script.log'),
+            'maxBytes': 1024*1024*5,
+            'backupCount': 5,
+            'formatter': 'standard',
+            }
+    },
+    # 下面是定义日志器
+    'loggers': {
+
+        'django': {
+            'handlers': ['default', 'console'],
+            'level': 'DEBUG',
+            'propagate': False
+        },
+
+        'django.request': {
+            'handlers': ['request_handler'],
+            'level': 'DEBUG',
+            'propagate': False,  # 是否继承父类
+            },
+        'scripts': {
+            'handlers': ['scprits_handler'],
+            'level': 'INFO',
+            'propagate': False
+        },
+        # 下面是给views调用使用的
+        'oms.views': {
+            'handlers': ['default', 'console'],
+            'level': 'DEBUG',
+            'propagate': True
+        },
+    }
+}
