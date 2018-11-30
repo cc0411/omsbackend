@@ -11,8 +11,6 @@ logger = logging.getLogger('omsbackend.views')
 
 # 封装salt-api的调用
 class SaltAPI(object):
-    # 给获取token的几个参数设置默认值，这样如果真突然出现调用另一个salt-api的情况，直接把对应参数传入一样适用哈哈
-    # 第一个参数session是为了给with as传入使用的，因为用with as会在程序执行完成后回收资源，不然Session是长连接占着连接不知道会不会造成影响后期
     def __init__(self, apiurl=settings.SALT_API_URL, username=settings.SALT_API_NAME, password=settings.SALT_API_PWD,
                  eauth='pam'):
         self.url = apiurl
@@ -56,24 +54,26 @@ class SaltAPI(object):
         return self.public(message, json=params)
 
     # 封装cmd.run,使用的时候只要代入tgt和arg即可，最多把tgt_type也代入
+    # salt tgt cmd.run  arg
     def cmd_run_api(self, tgt, arg):
         params = {'client': 'local', 'tgt': tgt, 'tgt_type': 'glob', 'fun': 'cmd.run', 'arg': arg}
         message = 'cmd_run_api'
         return self.public(message, json=params)
 
     # 封装异步cmd.run,使用的时候只要代入tgt和arg即可，最多把tgt_type也代入
+    #salt jid_api(jid)查看执行结果
     def async_cmd_run_api(self, tgt, arg):
         params = {'client': 'local_async', 'tgt': tgt, 'tgt_type': 'glob', 'fun': 'cmd.run', 'arg': arg}
         message = 'async_cmd_run_api'
         return self.public(message, json=params)
 
     # 封装state.sls,使用的时候只要代入tgt和arg即可，最多把tgt_type也代入
+
     def state_api(self, tgt, arg=None):
         params = {'client': 'local', 'tgt': tgt, 'tgt_type': 'glob', 'fun': 'state.sls', 'arg': arg}
         message = 'state_api'
         return self.public(message, json=params)
-
-    # a安装minion，需要搭配minion_install.sls使用
+    # 安装minion，需要搭配minion_install.sls使用
     def install_minion_api(self, tgt, arg=None):
         params = {'client': 'ssh', 'tgt': tgt, 'tgt_type': 'glob', 'fun': 'state.sls', 'arg': arg}
         message = 'install_minion_api'
@@ -144,13 +144,13 @@ class SaltAPI(object):
         message = 'saltkey_delete_api'
         return self.public(message, json=params)
 
-    # 接受salt-key的方法的include_rejected和include_denied就算设置为True也无效测试发现！！
+    # 接受salt-key的方法
     def saltkey_accept_api(self, tgt):
         parmas = {'client': 'wheel', 'fun': 'key.accept', 'match': tgt}
         message = 'saltkey_accept_api'
         return self.public(message, json=parmas)
 
-    # 拒绝salt-key的方法奶奶的include_accepted和include_denied就算设置为True也无效测试发现！！
+    # 拒绝salt-key的方法
     def saltkey_reject_api(self, tgt):
         parmas = {'client': 'wheel', 'fun': 'key.reject', 'match': tgt}
         message = 'saltkey_reject_api'
@@ -183,14 +183,14 @@ class SaltAPI(object):
         return self.public(message, json=params)
 
     # 封装grains.item,使用的时候只要代入tgt和arg即可，最多把tgt_type也代入
-    def grains_item_api(self, tgt, tgt_type='glob', arg=None):
+    def grains_item_api(self, tgt,arg,tgt_type='glob'):
         params = {'client': 'local', 'tgt': tgt, 'tgt_type': tgt_type, 'fun': 'grains.item', 'arg': arg}
 
         message = 'grains_item_api'
         return self.public(message, json=params)
 
     # 封装service.available查看服务是否存在Ture or False,使用的时候只要代入tgt和arg即可，最多把tgt_type也代入
-    def service_available_api(self, tgt, arg=None):
+    def service_available_api(self, tgt, arg):
         params = {'client': 'local', 'tgt': tgt, 'tgt_type': 'glob', 'fun': 'service.available', 'arg': arg}
         message = 'service_available_api'
         return self.public(message, json=params)
@@ -245,7 +245,6 @@ class SaltAPI(object):
         return self.public(message, json=params)
 
     # 封装task.run启动windows计划任务，salt '192.168.100.171' task.run test1
-    # ！坑！官方文档里命令是salt '192.168.100.171' task.list_run test1 根本就不行！
     def task_run_api(self, tgt, arg=None):
         params = {'client': 'local', 'tgt': tgt, 'tgt_type': 'glob', 'fun': 'task.run', 'arg': arg}
         message = 'task_run_api'

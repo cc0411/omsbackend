@@ -25,6 +25,7 @@ from assets.views import AssetViewSet,IdcViewSet,BusinessUnitViewSet,HostGroupVi
 from salt.views import MinionListViewSet,SaltCmdInfoViewSet,SaltKeyViewSet
 from users.views import UserInfoViewSet
 from django.views.generic import TemplateView
+
 router = DefaultRouter()
 
 #主机管理路由
@@ -51,6 +52,8 @@ urlpatterns = [
     url(r'^media/(?P<path>.*)$', serve, {"document_root": MEDIA_ROOT}),
     #django默认认证
     url(r'^api-auth/', include('rest_framework.urls')),
+    #salturls
+    url(r'^salt/',include('salt.urls',namespace='salt')),
     #rest文档页
     url(r'docs/',include_docs_urls(title="OMS")),
     #路由

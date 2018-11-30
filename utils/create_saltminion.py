@@ -4,7 +4,7 @@ from salt.models import MinionList,SaltKeyList
 from salt.salt_api import SaltAPI
 
 import logging
-logger = logging.getLogger('oms.views')
+logger = logging.getLogger('omsbackend.views')
 
 
 def saltkey_list():
