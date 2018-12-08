@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'salt',
     'rest_framework',
     'assets',
+    'cloud',
+    'channels',     #websocket
     'corsheaders',  #跨域
     'xadmin',
     'crispy_forms',
@@ -51,6 +53,7 @@ INSTALLED_APPS = [
     'django_filters',  # 过滤
 
 ]
+
 
 #跨域访问安装django-cors—headers，并配置MIDDLEWARE
 CORS_ORIGIN_ALLOW_ALL = True
@@ -179,15 +182,15 @@ JWT_AUTH = {
 
 
 # salt-api地址
-SALT_API_URL = 'https://192.168.56.101:8000'
+SALT_API_URL = 'https://192.168.55.128:8000'
 # salt-api用户
 SALT_API_NAME = 'saltapi'
 # salt-api密码
 SALT_API_PWD = '123456'
 # salt服务端安装的minion的id，服务端也要安装一下minion，有很多用到的时候
-SALT_MASTER = '192.168.56.101'
+SALT_MASTER = '192.168.55.128'
 # salt服务端IP，salt-ssh等调用
-SALT_MASTER_IP = '192.168.56.101'
+SALT_MASTER_IP = '192.168.55.128'
 #LOGGING
 LOGGING = {
     'version': 1,
@@ -265,3 +268,20 @@ LOGGING = {
         },
     }
 }
+
+
+# Channels
+ASGI_APPLICATION = 'omsbackend.routing.application'
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
+
+#TencentApi
+from . import config
+SECRETID = config.SECRETID
+SECRETKEY = config.SECRETKEY

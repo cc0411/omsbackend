@@ -25,7 +25,7 @@ for item in  list3:
             break
     else:
         list4.append({"name":item["name"],"id":item["id"],"child":{}})
-print(list4)
+#print(list4)
 #for item in list3:
 #    for dic in list4:
 #        if item['name'] == dic['name']:
@@ -34,6 +34,4 @@ print(list4)
 #    else:
 #        list4.append({"name":item["name"],"hobby_list":[item['hobby']]})
 #
-
-
 

@@ -10,7 +10,7 @@ User = get_user_model()
 from django.db.models import Q
 from django.contrib.auth.backends import ModelBackend
 class CustomBackend(ModelBackend):
-    def authenticate(self,username=None, password=None, **kwargs):
+    def authenticate(self, request,username=None, password=None, **kwargs):
         try:
             user = User.objects.get(Q(username=username)|Q(email=username))
             if user.check_password(password):

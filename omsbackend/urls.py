@@ -54,6 +54,8 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls')),
     #salturls
     url(r'^salt/',include('salt.urls',namespace='salt')),
+    #cloud
+    url(r'^cloud/',include('cloud.urls',namespace='cloud')),
     #rest文档页
     url(r'docs/',include_docs_urls(title="OMS")),
     #路由
