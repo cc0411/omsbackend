@@ -40,6 +40,24 @@ class SaltAPI(object):
 
     # 先做一个最通用的方法，就是不定义data的各个东西，在使用的时候定义好带入，好处是任何一个saltapi的操作都能支持，而且可以单独使用
     def public(self, message='public', **kwargs):
+        '''
+         tgt : minions
+         fun : 函数
+         arg : 参数
+         tgt_type : tgt的匹配规则
+             'glob' - Bash glob completion - Default
+             'pcre' - Perl style regular expression
+             'list' - Python list of hosts
+             'grain' - Match based on a grain comparison
+             'grain_pcre' - Grain comparison with a regex
+             'pillar' - Pillar data comparison
+             'nodegroup' - Match on nodegroup
+             'range' - Use a Range server for matching
+             'compound' - Pass a compound match string
+        :param message:
+        :param kwargs:
+        :return:
+        '''
         headers_token = {'X-Auth-Token': self.__token}
         headers_token.update(self.headers)
         requests.packages.urllib3.disable_warnings()
@@ -55,22 +73,22 @@ class SaltAPI(object):
 
     # 封装cmd.run,使用的时候只要代入tgt和arg即可，最多把tgt_type也代入
     # salt tgt cmd.run  arg
-    def cmd_run_api(self, tgt, arg):
-        params = {'client': 'local', 'tgt': tgt, 'tgt_type': 'glob', 'fun': 'cmd.run', 'arg': arg}
+    def cmd_run_api(self, tgt, arg,tgt_type='glob'):
+        params = {'client': 'local', 'tgt': tgt, 'tgt_type': tgt_type, 'fun': 'cmd.run', 'arg': arg}
         message = 'cmd_run_api'
         return self.public(message, json=params)
 
     # 封装异步cmd.run,使用的时候只要代入tgt和arg即可，最多把tgt_type也代入
     #salt jid_api(jid)查看执行结果
-    def async_cmd_run_api(self, tgt, arg):
-        params = {'client': 'local_async', 'tgt': tgt, 'tgt_type': 'glob', 'fun': 'cmd.run', 'arg': arg}
+    def async_cmd_run_api(self, tgt, arg,tgt_type='glob'):
+        params = {'client': 'local_async', 'tgt': tgt, 'tgt_type': tgt_type, 'fun': 'cmd.run', 'arg': arg}
         message = 'async_cmd_run_api'
         return self.public(message, json=params)
 
     # 封装state.sls,使用的时候只要代入tgt和arg即可，最多把tgt_type也代入
 
-    def state_api(self, tgt, arg=None):
-        params = {'client': 'local', 'tgt': tgt, 'tgt_type': 'glob', 'fun': 'state.sls', 'arg': arg}
+    def state_api(self, tgt, arg=None,tgt_type='glob'):
+        params = {'client': 'local', 'tgt': tgt, 'tgt_type': tgt_type, 'fun': 'state.sls', 'arg': arg}
         message = 'state_api'
         return self.public(message, json=params)
     # 安装minion，需要搭配minion_install.sls使用
@@ -80,8 +98,8 @@ class SaltAPI(object):
         return self.public(message, json=params)
 
     # 封装异步state.sls,使用的时候只要代入tgt和arg即可，最多把tgt_type也代入，得到结果为jid号
-    def async_state_api(self, tgt, arg=None):
-        params = {'client': 'local_async', 'tgt': tgt, 'tgt_type': 'glob', 'fun': 'state.sls', 'arg': arg}
+    def async_state_api(self, tgt, arg=None,tgt_type='glob'):
+        params = {'client': 'local_async', 'tgt': tgt, 'tgt_type': tgt_type, 'fun': 'state.sls', 'arg': arg}
 
         message = 'async_state_api'
         return self.public(message, json=params)

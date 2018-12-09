@@ -108,7 +108,8 @@ def get_instancetype():
                             'family':family,
                             'memory':memory,
                             'type':type,
-                            'cpu' : cpu}
+                            'cpu' : cpu
+                            }
             InstancesType.objects.update_or_create(region_id=i['id'],
                                                    zone = zone,
                                                    family=family,
@@ -165,7 +166,7 @@ def get_instances():
                             'project' : projectid,
                             'instancestate' :instancestate,
                             'securityid' : securityid,
-                            'image' : Image.objects.get(imageid=imageid).name,
+                            'image' : Image.objects.filter(imageid=imageid).first().name,
                             'os' : os,
                             'chargetype':chargetype,
                             'renewflag' :renewflag,
@@ -183,7 +184,7 @@ def get_instances():
                             'restrictstate' : restrictstate}
             Instances.objects.update_or_create(region_id=i['id'],
                                                instance_id = instance_id,
-                                               default = update_values
+                                               defaults = update_values
                                                )
     print('Instances列表更新完成' + time.strftime('%Y年%m月%d日 %X'))
     return True

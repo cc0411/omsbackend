@@ -45,7 +45,7 @@ class Zone(models.Model):
 
 class Image(models.Model):
     region = models.ForeignKey(Region,verbose_name='大区ID')
-    imageid = models.CharField(max_length=32,verbose_name='镜像ID',unique=True)
+    imageid = models.CharField(max_length=32,verbose_name='镜像ID')
     os = models.CharField(max_length=64,verbose_name='操作系统')
     size = models.IntegerField(verbose_name='镜像大小')
     type = models.CharField(max_length=64,verbose_name='镜像类型')
@@ -64,6 +64,7 @@ class Image(models.Model):
     class Meta:
         verbose_name = "镜像"
         verbose_name_plural = verbose_name
+        unique_together=('region','imageid')
 
 class InstancesType(models.Model):
     region = models.ForeignKey(Region, verbose_name='大区ID')
