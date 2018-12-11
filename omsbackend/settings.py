@@ -180,17 +180,6 @@ JWT_AUTH = {
     'JWT_AUTH_HEADER_PREFIX': 'JWT',
 }
 
-
-# salt-api地址
-SALT_API_URL = 'https://192.168.56.101:8000'
-# salt-api用户
-SALT_API_NAME = 'saltapi'
-# salt-api密码
-SALT_API_PWD = '123456'
-# salt服务端安装的minion的id，服务端也要安装一下minion，有很多用到的时候
-SALT_MASTER = '192.168.56.101'
-# salt服务端IP，salt-ssh等调用
-SALT_MASTER_IP = '192.168.56.101'
 #LOGGING
 LOGGING = {
     'version': 1,
@@ -283,5 +272,17 @@ CHANNEL_LAYERS = {
 
 #TencentApi
 from . import local_settings
+
 SECRETID = local_settings.SECRETID
 SECRETKEY = local_settings.SECRETKEY
+
+# salt-api地址
+SALT_API_URL = local_settings.SALT_API_URL
+# salt-api用户
+SALT_API_NAME = local_settings.SALT_API_NAME
+# salt-api密码
+SALT_API_PWD = local_settings.SALT_API_PWD
+# salt服务端安装的minion的id，服务端也要安装一下minion，有很多用到的时候
+SALT_MASTER = local_settings.SALT_MASTER
+# salt服务端IP，salt-ssh等调用
+SALT_MASTER_IP = local_settings.SALT_MASTER_IP

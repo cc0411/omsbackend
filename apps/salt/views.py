@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from django.http import JsonResponse
 from .salt_api import SaltAPI
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 # Create your views here.
 
 salt = SaltAPI()
@@ -33,6 +34,8 @@ class SaltCmdInfoViewSet(mixins.ListModelMixin,viewsets.GenericViewSet):
 
 from utils import create_saltminion
 class RefreshSalt(APIView):
+    permission_classes = [IsAuthenticated, ]
+    authentication_classes = [JSONWebTokenAuthentication,]
     def get(self,request):
         type =request.query_params.get('type')
         if type =='key':
@@ -49,6 +52,8 @@ class RefreshSalt(APIView):
         return JsonResponse(res)
 
 class  PingSaltView(APIView):
+    permission_classes = [IsAuthenticated, ]
+    authentication_classes = [JSONWebTokenAuthentication,]
     def get(self,request):
         minion_id = request.query_params.get('minion_id')
         result =salt.test_api(tgt=minion_id)
@@ -63,6 +68,8 @@ class  PingSaltView(APIView):
         return JsonResponse(res)
 
 class SaltKeyView(APIView):
+    permission_classes = [IsAuthenticated, ]
+    authentication_classes = [JSONWebTokenAuthentication, ]
     def get(self,request):
         type = request.query_params.get('type')
         minion_id = request.query_params.get('minion_id')
@@ -80,5 +87,14 @@ class SaltKeyView(APIView):
         return JsonResponse(res)
 
 
-
+class SaltCmd(APIView):
+    permission_classes = [IsAuthenticated, ]
+    authentication_classes = [JSONWebTokenAuthentication,]
+    def post(self,request):
+        minions = request.data.getlist('minions')
+        minions = ','.join(minions)
+        cmd = request.data.get('cmd')
+        result = salt.cmd_run_api(tgt='{0}'.format(minions),arg='{0}'.format(cmd),tgt_type='list')
+        print(result)
+        return JsonResponse(result)
 

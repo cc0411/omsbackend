@@ -188,3 +188,19 @@ def get_instances():
                                                )
     print('Instances列表更新完成' + time.strftime('%Y年%m月%d日 %X'))
     return True
+
+def  get_project():
+    print('开始更新项目列表' + time.strftime('%Y年%m月%d日 %X'))
+    cloud_api = TencentCloudAPI()
+    response_data = cloud_api.get_project()
+    response_data = json.loads(response_data)
+    data_source = response_data['data']
+    for k in data_source:
+        projectid = k['projectId']
+        projectname = k['projectName']
+        projcetinfo =k['projectInfo']
+        ctime = k['createTime']
+        update_values = {'proid':projectid,'proname':projectname,'ctime':ctime,'desc':projcetinfo}
+        Project.objects.update_or_create(proid=projectid,defaults=update_values)
+    print('项目列表更新完成' + time.strftime('%Y年%m月%d日 %X'))
+    return True

@@ -20,3 +20,4 @@ class SaltCmdInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = SaltCmdInfo
         fields = "__all__"
+

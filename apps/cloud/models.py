@@ -4,10 +4,12 @@ from datetime import datetime
 
 
 class Project(models.Model):
-    pid = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=32,verbose_name='项目名称',unique=True)
+    proid = models.IntegerField(primary_key=True)
+    proname = models.CharField(max_length=32,verbose_name='项目名称',default='')
+    ctime = models.CharField(max_length=32,verbose_name='项目创建时间',default='')
+    desc = models.TextField(verbose_name='项目描述',blank=True,null=True)
     def __str__(self):
-        return self.name
+        return self.proname
     class Meta:
         verbose_name = '项目'
         verbose_name_plural = verbose_name

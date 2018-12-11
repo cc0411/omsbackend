@@ -5,15 +5,12 @@ from tencentcloud.common.profile.http_profile import HttpProfile
 from tencentcloud.common.exception.tencent_cloud_sdk_exception import TencentCloudSDKException
 from tencentcloud.cvm.v20170312 import cvm_client,models
 from omsbackend import settings
-from utils import create_signature
 import requests
 import time
 import sys
 import random
 import ssl
-import base64
-import hmac
-import hashlib
+import  urllib.parse
 
 ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -26,29 +23,27 @@ class TencentCloudAPI(object):
     #获取签名
     def get_cred(self):
         return  credential.Credential(self.secretid,self.secretkey)
-
-    def get_project(self,region=''):
+    #获取项目
+    def get_project(self,):
        try:
-           mysignature = create_signature.create_signature(action='DescribeProject',region=region)
-           url ='https://account.api.qcloud.com/v2/index.php'
-           timestamp =int(time.time())
-           nonce = random.randint(1, sys.maxsize)
-           secret_key = self.secretkey.encode(encoding='utf-8')
-           srcStr = "GETaccount.api.qcloud.com/v2/index.php?Action=DescribeProject&Nonce=%s&Region=%s&SecretId=%s&Signature=%s&Timestamp=%s&Version=2017-08-09" %(nonce,region,self.secretid,mysignature,timestamp)
-           srcStr = srcStr.encode(encoding='utf-8')
-           digest = hmac.new(secret_key,srcStr,digestmod=hashlib.sha1).digest()
-           digest_b64 = base64.b64encode(digest)
-           signStr = digest_b64.decode(encoding='utf-8')
-           params = {
-               'Action':'DescribeProject',
-               'SecretId' :self.secretid,
-               'Region':region,
-               'Timestamp':timestamp,
-               'Nonce':nonce,
-               'Signature':signStr,
+           from QcloudApi.qcloudapi import QcloudApi
+           module = 'account'
+           action = 'DescribeProject'
+           action_params = {
+               'Limnit': 1
            }
-           response = requests.get(url,params=params)
-           print(response.json())
+           config = {
+               'Region': '',
+               'secretId': self.secretid,
+               'secretKey': self.secretkey,
+               'method': 'GET',
+               'SignatureMethod': 'HmacSHA1',
+           }
+           service = QcloudApi(module, config)
+           #print(service.generateUrl(action, action_params))
+           result = service.call(action, action_params)
+           ret = result.decode('utf-8')
+           return ret
        except Exception as e:
            pass
 

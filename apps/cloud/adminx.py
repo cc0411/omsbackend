@@ -3,6 +3,12 @@ from .models import  Region,Zone,Image,Instances,Project,InstancesType
 
 import xadmin
 
+class ProjectAdmin(object):
+    list_display =['proid','proname','ctime']
+    search_fields =['proid','proname','ctime']
+    list_filter =['proid','proname','ctime']
+
+
 class RegionAdmin(object):
     list_display =['region','name','state','utime']
     search_fields =['region','name','state','utime']
@@ -18,6 +24,7 @@ class ImageAdmin(object):
     search_fields = ['imageid','os','name','init']
     list_filter = ['imageid','os','name','init']
 
+
 class InstancesAdmin(object):
     list_display=['placement','project','instance_id','instancestate','type','nip','wip','securityid','os','ctime','etime']
     search_fields =['placement','project','instance_id','os','ctime','etime','nip','wip']
@@ -29,6 +36,7 @@ class InstanceTypeAdmin(object):
     search_fields =['region','zone','family','type']
     list_filter =['region','zone','family','type']
 
+xadmin.site.register(Project,ProjectAdmin)
 xadmin.site.register(Zone,ZoneAdmin)
 xadmin.site.register(Region,RegionAdmin)
 xadmin.site.register(Image,ImageAdmin)
